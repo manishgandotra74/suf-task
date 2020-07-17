@@ -5,11 +5,10 @@ class UserController {
     async authenticate(req, res) {
         // check database if user exists
         User.find({
-            email: req.query.email,
-            password: req.query.password
+            email: req.body.email,
+            password: req.body.password
         }).then(user => {
             console.log(user);
-
             //if user exists
             if (user.length > 0) {
                 res.status(200).json({
@@ -19,21 +18,21 @@ class UserController {
             } else {
                 // error if user is not existing
                 res.status(201).json({
-                    message: 'User Doesnot Exists'
+                    message: 'Invalid Username or password'
                 });
             }
         })
     }
     async register(req, res) {
         const user = new User({
-            name:req.query.name, 
-            email:req.query.email, 
-            password:req.query.password, 
+            name:req.body.Name, 
+            email:req.body.email, 
+            password:req.body.password, 
             insertdate: new Date(),
           });
           // check if user with same email exists
           User.find({
-            email: req.query.email
+            email: req.body.email
           }).then(createdPost => {
             if (createdPost.length === 1) {
     // if exists then give eror
